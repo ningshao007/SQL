@@ -63,3 +63,19 @@ SELECT vend_id,COUNT(*) AS num_prods FROM Products GROUP BY vend_id;
 --  dll01     4
 --  fng01     2
 SELECT cust_id,COUNT(*) AS orders FROM Orders GROUP BY cust_id HAVING COUNT(*) >= 2
+
+
+-- 子查询 
+-- 有多张表,OrderItems存储订单物品相关的,Orders表存储顾客ID,顾客实际信息存储在Customers表中,现在要列出订购RGAN01的所有顾客信息.
+SELECT cust_name,cust_contact FROM Customers 
+  WHERE cust_id IN (SELECT cust_id FROM Orders
+    WHERE order_num IN (SELECT order_num FROM OrderItems WHERE prod_id = 'RGAN01'))
+
+-- 创建联结 
+-- 内联结 
+SELECT vend_name ,prod_name,prod_price FROM Vendors INNER JOIN Products ON Vendors.vend_id = Products.vend_id
+-- 上面子查询等价例子
+SELECT cust_name,cust_contact FROM Customers,Orders,OrderItems
+  WHERE Customers.cust_id = Orders.cust_id
+  AND OrderItems.order_num = Orders.order_num
+  AND prod_id = 'RGAN01'
