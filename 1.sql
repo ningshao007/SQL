@@ -55,7 +55,8 @@ SELECT AVG(DISTINCT prod_price) AS avg_price FROM Products WHERE vend_id = 'DLL0
 -- 组合聚焦函数使用
 SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min,MAX(prod_price) AS price_max,AVG(prod_price) AS price_avg FROM Products
 
--- 分组GROUP BY,过滤分组HAVING
+-- 分组GROUP BY,过滤分
+组HAVING
 -- 假设表中vend_id有供应商brs01(3个),供应商dll01(4个),fng01(2个)
 SELECT vend_id,COUNT(*) AS num_prods FROM Products GROUP BY vend_id;
 -- vend_id   num_prods 
@@ -79,3 +80,60 @@ SELECT cust_name,cust_contact FROM Customers,Orders,OrderItems
   WHERE Customers.cust_id = Orders.cust_id
   AND OrderItems.order_num = Orders.order_num
   AND prod_id = 'RGAN01'
+  
+
+
+
+
+
+-- 外键:值是另一表的主键
+-- 索引: 就像字典按字母编排过的一样,字母索引
+      -- 要动态更新索引
+      -- 索引数据可能要占用大量存储空间
+
+
+
+
+
+------------------------------------------ 玩具经销商使用的订单录入系统 ----------------------------------------
+  -- 管理供应商(Vendors表,存储销售产品的供应商)
+  -- 管理产品目录(Products)
+  -- 管理顾客列表(Customers)
+  -- 录入顾客订单
+        -- Orders表(存储顾客订单,不是订单细节)
+        -- OrderItems表(存储每个订单中的实际物品)
+
+-------- Vendors ----------
+vend_id      唯一的供应商ID(这个是主键)
+vend_name    供应商名
+vend_address 供应商地址
+vend_city    供应商所在城市 
+vend_state   供应商所在州
+vend_zip     供应商地址邮编
+vend_country 供应商所在国家
+--------- Products ----------
+prod_id      唯一的产品ID(主键)
+vend_id      产品供应商ID(外键,关联到Vendors表的vend_id) 
+prod_name    产品名
+prod_price   产品价格
+prod_desc    产品描述 
+--------- Customers ----------
+cust_id      唯一的顾客ID(主键)
+cust_name    顾客名
+cust_address 顾客地址
+cust_city    顾客城市 
+cust_state   顾客所在州
+cust_zip     顾客邮政 
+cust_country 顾客所在国家
+cust_contact 顾客联系名
+cust_email   顾客邮箱
+--------- Orders ----------
+order_num   唯一的订单号(主键)
+order_data  订单日期
+cust_id     订单顾客ID(外键,关联到Customers的cust_id列)
+--------- OrderItems ----------
+order_num   订单号(关联到Order表的order_num)
+order_item  订单物品号(订单内的顺序)
+prod_id     产品ID(关联到Products表的prod_id)
+quantity    物品数量 
+item_price  物品价格
